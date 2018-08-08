@@ -1,0 +1,96 @@
+package com.example.xyzreader.ui;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.v4.util.LruCache;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+import com.facebook.binaryresource.BinaryResource;
+import com.facebook.cache.common.CacheKey;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+public class ImageLoaderHelper {
+    private static ImageRequest sInstance;
+
+//    public static ImageLoaderHelper getInstance(Context context) {
+//        if (sInstance == null) {
+//            sInstance = new ImageLoaderHelper(context.getApplicationContext());
+//        }
+//
+//        return sInstance;
+//    }
+//
+//    private final LruCache<String, Bitmap> mImageCache = new LruCache<String, Bitmap>(20);
+//    private ImageLoader mImageLoader;
+//
+//    private ImageLoaderHelper(Context applicationContext) {
+//        RequestQueue queue = Volley.newRequestQueue(applicationContext);
+//        ImageLoader.ImageCache imageCache = new ImageLoader.ImageCache() {
+//            @Override
+//            public void putBitmap(String key, Bitmap value) {
+//                mImageCache.put(key, value);
+//            }
+//
+//            @Override
+//            public Bitmap getBitmap(String key) {
+//                return mImageCache.get(key);
+//            }
+//        };
+//        mImageLoader = new ImageLoader(queue, imageCache);
+//    }
+//
+//    public ImageLoader getImageLoader() {
+//        return mImageLoader;
+//    }
+
+    public static void load(final SimpleDraweeView imageView, final String url) {
+        sInstance = ImageRequest.fromUri(url);
+        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(sInstance);
+        BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
+
+        if (resource != null) {
+            Uri uri = Uri.parse(url);
+            DraweeController draweeController = Fresco.newDraweeControllerBuilder().setUri(uri)
+                    .setUri(uri)
+                    .build();
+
+            imageView.setController(draweeController);
+        } else {
+            networkLoad(imageView, url);
+        }
+
+    }
+
+    private static  void networkLoad(final SimpleDraweeView imgView, final String url){
+
+        Uri uri = Uri.parse(url);
+
+        sInstance = ImageRequestBuilder.newBuilderWithSource(uri).setProgressiveRenderingEnabled(true).build();
+
+        DraweeController draweeController = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setImageRequest(sInstance)
+                .setTapToRetryEnabled(true)
+                .build();
+
+        imgView.setController(draweeController);
+
+    }
+
+    public static ImageRequest getCurrentImageRequest(){
+        return sInstance;
+    }
+
+}
+
+
+
