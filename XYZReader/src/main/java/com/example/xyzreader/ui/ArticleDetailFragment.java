@@ -62,29 +62,12 @@ public class ArticleDetailFragment extends Fragment implements
     private Toolbar toolbar;
     private Cursor mCursor;
     private long mItemId;
-   // private View mRootView;
     private FloatingActionButton fab;
     private SimpleDraweeView mPhotoView;
     private TextView dateView, titleView, authorView, bodyView;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
-    //    private int mMutedColor = 0xFF333333;
-   // private ObservableScrollView mScrollView;
-   // private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
-    //private ColorDrawable mStatusBarColorDrawable;
-
-   // private int mTopInset;
-    //private View mPhotoContainerView;
-    //private ImageView mPhotoView;
-    //private int mScrollY;
-  //  private boolean mIsCard = false;
-    //private int mStatusBarFullOpacityBottom;
-
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
-    // Use default locale format
-    private SimpleDateFormat outputFormat = new SimpleDateFormat();
-    // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -109,9 +92,6 @@ public class ArticleDetailFragment extends Fragment implements
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
 
-        //mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-        //mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-         //       R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
 
@@ -231,12 +211,6 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-//        if (!isAdded()) {
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//            return;
-//        }
 
         mCursor = cursor;
         if (mCursor != null && !mCursor.moveToFirst()) {
@@ -253,17 +227,6 @@ public class ArticleDetailFragment extends Fragment implements
         mCursor = null;
         bindViews();
     }
-
-//    public int getUpButtonFloor() {
-//        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-//            return Integer.MAX_VALUE;
-//        }
-//
-//        // account for parallax
-//        return mIsCard
-//                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-//                : mPhotoView.getHeight() - mScrollY;
-//    }
 
     private void processImageWithPaletteApi(ImageRequest request) {
 
@@ -283,10 +246,6 @@ public class ArticleDetailFragment extends Fragment implements
                         int defaultColor = 0x000000;
                         int lightMutedColor = palette.getLightMutedColor(defaultColor);
                         int darkMutedColor = palette.getDarkMutedColor(defaultColor);
-//                        if (collapsingToolbarLayout != null) {
-//                            collapsingToolbarLayout.setContentScrimColor(lightMutedColor);
-//                            collapsingToolbarLayout.setStatusBarScrimColor(darkMutedColor);
-//                        }
                     }
                 });
             }

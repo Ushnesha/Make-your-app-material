@@ -131,7 +131,9 @@
                         android:autoLink="web"
                         android:linksClickable="true"
                         android:textColor="@color/secondaryText"
-                        tools:text="@string/lorem_ipsum"/>
+                        tools:text="@string/lorem_ipsum"
+                        android:maxLines="10"
+                        android:ellipsize="marquee"/>
 
                 </LinearLayout>
 
